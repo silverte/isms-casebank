@@ -102,16 +102,16 @@ input[type=text]{flex:1;background:var(--card2);border:1px solid var(--line);bor
     <div class="panel">
       <h2>뱅크</h2>
       <div class="seg" id="bank">
-        <button data-v="defect" class="on">🔴 결함사례</button>
-        <button data-v="check">🟦 주요확인사항</button>
+        <button data-v="defect">🔴 결함사례</button>
+        <button data-v="check" class="on">🟦 주요확인사항</button>
         <button data-v="recall">🧠 기준회상</button>
       </div>
       <div id="recallHint" class="hidden" style="font-size:12px;color:var(--muted);margin:-4px 0 10px">기준 번호·명칭만 보고 원문 요지 + 점검질문을 떠올린 뒤 대조 (101장 · 플립 자가채점)</div>
       <h2 id="modeH">학습 모드</h2>
       <div class="seg" id="mode">
-        <button data-v="type" class="on">🔢 번호입력</button>
+        <button data-v="type">🔢 번호입력</button>
         <button data-v="flash">🔄 플립카드</button>
-        <button data-v="mc">📝 객관식</button>
+        <button data-v="mc" class="on">📝 객관식</button>
       </div>
       <h2>출제 범위 — 영역</h2>
       <div class="seg small" id="area">
@@ -123,9 +123,9 @@ input[type=text]{flex:1;background:var(--card2);border:1px solid var(--line);bor
       <h2>필터</h2>
       <div class="seg small" id="filter">
         <button data-v="all">전체</button>
-        <button data-v="todo" class="on">📚 미암기</button>
+        <button data-v="todo">📚 미암기</button>
         <button data-v="weak">🔴 약점만</button>
-        <button data-v="new">🆕 안 푼 것</button>
+        <button data-v="new" class="on">🆕 안 푼 것</button>
       </div>
       <div style="font-size:12px;color:var(--muted);margin:-2px 0 4px">미암기 = 완전암기(box5)를 뺀 전부 — 안 푼 것 + 약점 + 아직 box2~4</div>
       <div class="row">
@@ -212,7 +212,7 @@ const BANKS = { defect: DATA.cases, check: DATA.checks, recall: RECALL };
 const PFXMAP = { defect: "casebank_v1:", check: "checkbank_v1:", recall: "recallbank_v1:" };
 const ASKMAP = { defect: "가장 직접적인 인증기준 1개는?", check: "이 점검항목은 어느 인증기준?" };
 // 뱅크별로 진도(PFX)·문항집합(CASES)이 갈린다. 토글 시 셋 다 교체된다.
-let BANK = "defect";
+let BANK = "check";
 let CASES = BANKS[BANK];
 let PFX = PFXMAP[BANK];
 
@@ -305,7 +305,7 @@ function distractors(correct, n){
 function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 
 // ---- 큐 구성 (필터 + Leitner 가중) ----
-let MODE='type', AREA=0, FILTER='todo', CODEQ='', QUEUE=[], QI=0, sess={ok:0,bad:0,n:0};
+let MODE='mc', AREA=0, FILTER='new', CODEQ='', QUEUE=[], QI=0, sess={ok:0,bad:0,n:0};
 
 function buildQueue(){
   let pool = CASES.filter(c=>{
